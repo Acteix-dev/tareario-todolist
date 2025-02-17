@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarean3</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="script.js" defer></script>
+  </head>
+
+  <body>
+    <div id="page-container">
+      <header>
+        <p>TAREARIO</p>
+      </header>
+
+      <aside>
+        <div class="switch-container">
+          <label class="switch" id="sidebar-switch">
+            <input type="checkbox" id="sidebar-toggle-btn" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div id="add-a-task">
+          <div id="add-a-task-title-row">
+            <h1>Agrega una tarea</h1>
+          </div>
+          <div id="add-task-container">
+            <div id="input-row">
+              <input
+                type="text"
+                autocomplete="off"
+                placeholder="Título"
+                id="add-title-input"
+                required
+              />
+              <p
+                contenteditable="true"
+                data-placeholder="Descripción"
+                id="add-desc-input"
+              ></p>
+            </div>
+
+            <div id="button-row">
+              <div class="custom-select">
+                <label for="priority-select"></label>
+                <select name="Prioridad" id="priority-select">
+                  <option value="low-priority">Prioridad baja</option>
+                  <option value="medium-priority">Prioridad media</option>
+                  <option value="high-priority">Prioridad alta</option>
+                  <option value="" selected>Prioridad normal</option>
+                </select>
+              </div>
+
+              <button type="button" id="add-task-btn">
+                <img src="/icons/add-icon.svg" />AGREGAR TAREA
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div id="task-list">
+          <div id="task-list-title-container">
+            <h1>Lista de tareas</h1>
+          </div>
+          <div id="tasks-container"></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
