@@ -287,7 +287,7 @@ button {
     height: 0px;
     padding: 0.75rem;
     border-radius: 0.25rem;
-    background-image: url(/icons/add-icon.svg);
+    background-image: url(icons/add-icon.svg);
     background-size: 0.625rem;
     background-position: center;
     background-repeat: no-repeat;
@@ -299,7 +299,7 @@ button {
   width: 32px;
   border-radius: 32px;
   aspect-ratio: 1/1;
-  background-image: url(/icons/drag-icon.png);
+  background-image: url(icons/drag-icon.png);
   background-repeat: no-repeat;
   background-position: center;
   &:hover {
@@ -312,14 +312,14 @@ button {
   width: 32px;
   border-radius: 32px;
   aspect-ratio: 1/1;
-  background-image: url(/icons/delete-icon.png);
+  background-image: url(icons/delete-icon.png);
   background-repeat: no-repeat;
   background-position: center;
   transition: all 0.2s ease-in-out;
 
   &:hover {
     background-color: var(--primary-bg-black30);
-    background-image: url(/icons/check-icon.png);
+    background-image: url(icons/check-icon.png);
   }
 }
 
@@ -397,7 +397,7 @@ aside.toggled .switch-container {
 
 .switch .slider {
   position: absolute;
-  background-image: url(/icons/visible-icon.svg);
+  background-image: url(icons/visible-icon.svg);
   background-repeat: no-repeat;
   background-position: center;
   width: 1.5rem;
@@ -405,5 +405,5 @@ aside.toggled .switch-container {
 }
 
 .switch input:checked + .slider {
-  background-image: url(/icons/hidden-icon.svg);
+  background-image: url(icons/hidden-icon.svg);
 }
