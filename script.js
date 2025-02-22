@@ -52,20 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
     newTaskTitle.setAttribute("contenteditable", "true");
     newTaskTitle.textContent = task.taskTitle;
 
-    newTaskTitle.addEventListener("input", function (event) {
-      let data = this.textContent.trim();
-      const parentTaskId = event.target.closest(".single-task-container").id;
-
-      if (data !== "") {
-        tasks.forEach((task) => {
-          if (task.taskId === parentTaskId) {
-            task["taskTitle"] = data;
-          }
-          window.localStorage.setItem("tasks", JSON.stringify(tasks));
-        });
-      }
-    });
-
     const newTaskDragHandler = document.createElement("div");
     newTaskDragHandler.classList.add("task-drag-handler");
     newTaskDragHandler.setAttribute("draggable", "true");
@@ -73,38 +59,55 @@ document.addEventListener("DOMContentLoaded", function () {
     const newTaskDeleteButton = document.createElement("button");
     newTaskDeleteButton.classList.add("task-delete-btn");
     newTaskDeleteButton.type = "button";
-    newTaskDeleteButton.addEventListener("click", function () {
-      newTaskContainer.remove();
-      tasks = tasks.filter((t) => t.taskId !== task.taskId);
-      window.localStorage.setItem("tasks", JSON.stringify(tasks));
-    });
 
     const newTaskDescription = document.createElement("p");
     newTaskDescription.classList.add("task-desc");
     newTaskDescription.classList.add("empty-description");
     newTaskDescription.setAttribute("draggable", "true");
-    if (task.taskDescription.length === 1 || task.taskDescription === "<br>" || task.taskDescription === " ") {
-      newTaskDescription.innerHtml = "";
+
+    if (task.taskDescription.trim() !== "") {
+      newTaskDescription.textContent = task.taskDescription;
+      newTaskDescription.classList.remove("empty-description");
     } else {
-      newTaskDescription.innerHTML = task.taskDescription;
+      newTaskDescription.textContent = "";
     }
 
-    newTaskDescription.addEventListener("click", function (event) {
-      event.target.setAttribute("contenteditable", "true");
-      event.target.focus();
+    // GET THE TASKS CONTAINER ELEMENT
+    const tasksContainer = document.getElementById("tasks-container");
+    // ADD EVENT LISTENERS TO THE CHILDS
+    tasksContainer.addEventListener("click", function (event) {
+      const taskElement = event.target.closest(".single-task-container");
+
+      if (event.target.classList.contains("task-delete-btn")) {
+        taskElement.remove();
+        tasks = tasks.filter((t) => t.taskId !== taskElement.id);
+        updateLocalStorage();
+      } else if (event.target.classList.contains("task-desc")) {
+        event.target.setAttribute("contenteditable", "true");
+        event.target.focus();
+      }
     });
 
-    newTaskDescription.addEventListener("input", function (event) {
-      let data = this.innerText;
-      const parentTaskId = event.target.closest(".single-task-container").id;
+    // HANDLE INPUT EVENTS
+    tasksContainer.addEventListener("input", function (event) {
+      const taskElement = event.target.closest(".single-task-container");
+      if (!taskElement) return;
 
-      tasks.forEach((task) => {
-        if (task.taskId === parentTaskId) {
-          task["taskDescription"] = data;
+      const task = tasks.find((task) => task.taskId === taskElement.id);
+
+      if (event.target.classList.contains("task-title")) {
+        task.taskTitle = event.target.textContent.trim();
+      } else if (event.target.classList.contains("task-desc")) {
+        const description = event.target.innerText.trim();
+        if (description === "") {
+          event.target.classList.add("empty-description");
+          event.target.innerHTML = "";
+        } else {
+          event.target.classList.remove("empty-description");
         }
-      });
-
-      window.localStorage.setItem("tasks", JSON.stringify(tasks));
+        task.taskDescription = description;
+      }
+      updateLocalStorage();
     });
 
     document.getElementById("tasks-container").appendChild(newTaskContainer);
@@ -114,11 +117,14 @@ document.addEventListener("DOMContentLoaded", function () {
     newTaskTitleRow.appendChild(newTaskTitle);
     newTaskContainer.appendChild(newTaskDescription);
 
-    // Attach drag and drop events
     addDragEvents(newTaskContainer);
     addDragoverEvents(newTaskContainer);
     addDropSwitchEvents(newTaskContainer);
     addPreventDrag(newTaskDescription);
+
+    function updateLocalStorage() {
+      window.localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
   }
 
   const toggleSidebar = document.querySelector("#sidebar-toggle-btn");

@@ -94,7 +94,8 @@ header {
   grid-area: header;
   display: flex;
   align-items: center;
-  padding-left: 1rem;
+  justify-content: space-between;
+  padding-inline: 1rem;
   font: var(--h2);
   background-color: var(--primary-bg-black10);
 }
@@ -266,6 +267,7 @@ button {
 }
 
 .task-desc {
+  position: relative;
   font: var(--p2);
   white-space: pre-wrap;
   display: inline-block;
@@ -274,8 +276,10 @@ button {
   margin-left: 5rem;
   color: var(--primary-gray);
   border: 1px solid var(--primary-bg-black20);
+  transition: opacity .3s ease-in-out;
   &:hover {
     cursor: text;
+    border: 1px solid var(--primary-bg-black30);
   }
   &:empty:hover {
     cursor: pointer;
@@ -292,6 +296,12 @@ button {
     background-position: center;
     background-repeat: no-repeat;
   }
+}
+
+.single-task-container:not(:hover) .task-desc.empty-description:not(:focus) {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .task-drag-handler {

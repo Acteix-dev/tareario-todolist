@@ -38,31 +38,33 @@ export function addDropSwitchEvents(element) {
     const dropTarget = event.currentTarget.closest(".single-task-container");
 
     if (draggedElement && dropTarget && draggedElement !== dropTarget) {
+      let tasks = JSON.parse(window.localStorage.getItem("tasks"))
+      
+      let draggedIndex = tasks.findIndex(task => task.taskId === draggedElementId);
+      let targetIndex = tasks.findIndex(task => task.taskId === dropTarget.id);
+      [tasks[draggedIndex], tasks[targetIndex]] = [tasks[targetIndex], tasks[draggedIndex]];
+      window.localStorage.setItem("tasks", JSON.stringify(tasks));
+      
       const parent = dropTarget.parentNode;
 
-      // Get current positions before moving
       const draggedRect = draggedElement.getBoundingClientRect();
       const targetRect = dropTarget.getBoundingClientRect();
+      console.log(targetRect.top);
 
-      // Calculate movement distances
-      const deltaY = targetRect.top - draggedRect.top;
+      const deltaY = targetRect.bottom - draggedRect.bottom;  
 
-      // Apply transition for smooth movement
       draggedElement.style.transition = "transform 0.3s ease";
-      dropTarget.style.transition = "transform 0.3s ease";
-
-      // Move elements visually
       draggedElement.style.transform = `translateY(${deltaY}px)`;
-      dropTarget.style.transform = `translateY(${-deltaY}px)`;
+      draggedElement.style.zIndex = `1`;
+      dropTarget.style.transition = "opacity 0.3s ease";
+      dropTarget.style.opacity = "0";
 
-      // Wait for animation to finish before swapping in DOM
       setTimeout(() => {
         draggedElement.style.transition = "";
-        dropTarget.style.transition = "";
         draggedElement.style.transform = "";
-        dropTarget.style.transform = "";
+        draggedElement.style.zIndex = `0`;
+        dropTarget.style.opacity = "1";
 
-        // Swap elements in the DOM
         const draggedNext = draggedElement.nextSibling;
         parent.insertBefore(draggedElement, dropTarget.nextSibling);
         parent.insertBefore(dropTarget, draggedNext);
@@ -70,6 +72,7 @@ export function addDropSwitchEvents(element) {
     }
 
     dropTarget.classList.remove("dragged-over");
+
   });
 }
 
